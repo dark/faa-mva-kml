@@ -17,7 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
 D=$(readlink -f "$0" | xargs dirname)
 TMPDIR=$(mktemp -d)
 
@@ -29,8 +28,36 @@ find "${D}/faa-xml/" -name '*.xml' | while read input; do
   "${D}/xml2kml.py" "${input}" -o "${output}"
 done
 
-# Updates all files in place.
+# Create a work and final directory to store the content packs.
+mkdir -p "${TMPDIR}/work/"
+mkdir -p "${TMPDIR}/contentpack/"
+
+# Iterate through all unique ATC identifiers and generate content packs.
+pushd "${TMPDIR}/work/"
+for id in $(find "${D}/kml/" -type f | sed 's:.*/kml/::' | cut -f 1 -d _ | sort | uniq); do
+  packname="MVA-${id}"
+  mkdir -p "${TMPDIR}/work/${packname}"
+  mkdir -p "${TMPDIR}/work/${packname}/layers"
+  cp ${D}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
+{
+  "name": "MVA Charts for ${id} $(date "+%Y.%m.%d")",
+  "abbreviation": "${packname}-v$(date "+%Y.%m.%d")",
+  "version": $(date "+%y.%j"),
+  "organizationName": "github.com/dark/faa-mva-kml"
+}
+EOF
+  zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
+done
+popd
+
+# Update all files in place.
 echo
 echo 'Moving files in place...'
 rm -rf "${D}/kml/"
 mv "${TMPDIR}/kml/" "${D}/kml/"
+rm -rf "${D}/contentpack/"
+mv "${TMPDIR}/contentpack/" "${D}/contentpack/"
+
+# Cleanup
+rm -rf "${TMPDIR}/"
