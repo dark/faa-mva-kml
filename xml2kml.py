@@ -19,7 +19,9 @@
 
 import argparse
 import attr
-from typing import List
+import os
+import simplekml
+from typing import List, Tuple
 from xml.etree import ElementTree
 
 # Constant namespaces used in all input XML files. See XML file headers.
@@ -43,6 +45,10 @@ class Position:
     def comma_z(self) -> str:
         """Comma-separated representation, including elevation."""
         return "{},{},0".format(self.long, self.lat)
+
+    def tuple_z(self) -> Tuple[float, float, float]:
+        """Tuple representation, including elevation."""
+        return (self.long, self.lat, 0.0)
 
 
 class Airspace:
@@ -100,7 +106,15 @@ class Chart:
             self.airspaces.append(Airspace(airspace))
 
     def write_kml(self, filename: str):
-        pass
+        kml = simplekml.Kml()
+        # Have a "pretty" document name.
+        kml.document.name = os.path.basename(filename).split(".")[0]
+        for airspace in self.airspaces:
+            kml.newpolygon(
+                name=airspace.name,
+                outerboundaryis=[p.tuple_z() for p in airspace.vertexes],
+            )
+        kml.save(filename)
 
 
 def main(input: str, output: str) -> None:
