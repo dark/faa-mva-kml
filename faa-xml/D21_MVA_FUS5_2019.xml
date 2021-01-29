@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns8:AIXMBasicMessage ns1:id="462ad75f-6be9-4743-a1b5-c802aa4d1724" xmlns:ns2="http://www.w3.org/1999/xlink" xmlns:ns1="http://www.opengis.net/gml/3.2" xmlns:ns4="http://www.isotc211.org/2005/gco" xmlns:ns3="http://www.aixm.aero/schema/5.1" xmlns:ns5="http://www.isotc211.org/2005/gmd" xmlns:ns6="http://www.isotc211.org/2005/gmx" xmlns:ns7="http://www.isotc211.org/2005/gts" xmlns:ns8="http://www.aixm.aero/schema/5.1/message">
+    <ns1:description ns2:type="simple">D21_MVA_FUS5_2019</ns1:description>
+    <ns1:boundedBy xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    <ns3:sequenceNumber>1</ns3:sequenceNumber>
+    <ns3:messageMetadata/>
+    <ns8:hasMember ns2:type="simple">
+        <ns3:Airspace ns1:id="18902834">
+            <ns1:description ns2:type="simple">MINIMUM VECTORING ALTITUDE (MVA)</ns1:description>
+            <ns1:boundedBy xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+            <ns3:timeSlice>
+                <ns3:AirspaceTimeSlice>
+                    <ns1:validTime ns2:type="simple">
+                        <ns1:TimePeriod>
+                            <ns1:beginPosition>1980-01-01T14:00:00Z</ns1:beginPosition>
+                            <ns1:endPosition indeterminatePosition="unknown"/>
+                        </ns1:TimePeriod>
+                    </ns1:validTime>
+                    <ns3:interpretation>BASELINE</ns3:interpretation>
+                    <ns3:sequenceNumber>1</ns3:sequenceNumber>
+                    <ns3:type>OTHER</ns3:type>
+                    <ns3:designator xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:localType xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:name>A</ns3:name>
+                    <ns3:designatorICAO xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:controlType xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:upperLowerSeparation xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:protectedRoute xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <ns3:geometryComponent>
+                        <ns3:AirspaceGeometryComponent>
+                            <ns3:operation xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                            <ns3:operationSequence xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                            <ns3:theAirspaceVolume>
+                                <ns3:AirspaceVolume>
+                                    <ns3:minimumLimit uom="FT">3000</ns3:minimumLimit>
+                                    <ns3:minimumLimitReference>MSL</ns3:minimumLimitReference>
+                                    <ns3:horizontalProjection>
+                                        <ns3:Surface srsName="urn:ogc:def:crs:OGC:1.3:CRS84" ns1:id="49de29f0-9628-4e7e-9014-a33c2d64f0ee">
+                                            <ns1:patches>
+                                                <ns1:PolygonPatch interpolation="planar">
+                                                    <ns1:exterior>
+                                                        <ns1:LinearRing>
+                                                            <ns1:posList>-82.45184 42.9384 -82.50075 42.97092 -82.55178 43.00163 -82.6048 43.03045 -82.6597 43.05732 -82.71634 43.08219 -82.77457 43.10498 -82.83427 43.12566 -82.89529 43.14416 -82.95748 43.16045 -83.02068 43.17449 -83.08476 43.18626 -83.14955 43.19571 -83.2149 43.20283 -83.28065 43.20761 -83.34664 43.21003 -83.38183 43.21035 -83.44779 43.20918 -83.51359 43.20565 -83.57908 43.19977 -83.64409 43.19155 -83.70847 43.18102 -83.77206 43.16819 -83.83472 43.1531 -83.89628 43.13578 -83.95661 43.11628 -84.01555 43.09463 -84.0173 43.09394 -84.07479 43.07011 -84.13062 43.04423 -84.18463 43.01638 -84.23672 42.9866 -84.28674 42.95498 -84.33458 42.92158 -84.38013 42.88648 -84.42327 42.84977 -84.4639 42.81153 -84.50192 42.77184 -84.53724 42.73081 -84.56978 42.68853 -84.59946 42.64509 -84.6262 42.6006 -84.64994 42.55517 -84.67063 42.5089 -84.68821 42.46191 -84.70264 42.4143 -84.71389 42.36619 -84.72193 42.31769 -84.72674 42.26892 -84.72831 42.21999 -84.72664 42.17103 -84.72172 42.12215 -84.71358 42.07347 -84.7079 42.04755 -84.69484 41.99941 -84.67861 41.95177 -84.65926 41.90474 -84.63684 41.85844 -84.61138 41.81298 -84.58297 41.76848 -84.55166 41.72504 -84.51753 41.68277 -84.48066 41.64178 -84.44115 41.60216 -84.39908 41.56402 -84.35456 41.52744 -84.3077 41.49252 -84.25861 41.45936 -84.2074 41.42802 -84.1542 41.39858 -84.09914 41.37113 -84.04236 41.34573 -83.98398 41.32244 -83.92414 41.30133 -83.86301 41.28243 -83.80071 41.26581 -83.7374 41.25151 -83.67323 41.23955 -83.60836 41.22998 -83.57341 41.22584 -83.50757 41.21994 -83.44142 41.21648 -83.38096 41.21545 -83.31487 41.21669 -83.24893 41.22038 -83.18332 41.22649 -83.11818 41.23501 -83.05368 41.24592 -82.98997 41.2592 -82.9272 41.27481 -82.86553 41.29272 -82.8051 41.31286 -82.74606 41.33521 -82.68855 41.35969 -82.63271 41.38626 -82.57867 41.41483 -82.52657 41.44535 -82.47653 41.47773 -82.42866 41.51189 -82.3831 41.54775 -82.33994 41.58522 -82.29929 41.62421 -82.26124 41.66462 -82.2259 41.70635 -82.19334 41.74929 -82.17482 41.77612 -82.14668 41.81994 -82.12146 41.8647 -82.09922 41.91031 -82.08001 41.95663 -82.06388 42.00357 -82.05087 42.051 -82.04101 42.09881 -82.03432 42.14689 -82.03081 42.19512 -82.03051 42.24338 -82.0334 42.29156 -82.03948 42.33953 -82.04874 42.3872 -82.06116 42.43443 -82.0767 42.48112 -82.09532 42.52716 -82.11699 42.57244 -82.14164 42.61684 -82.16923 42.66027 -82.19968 42.70263 -82.23292 42.74381 -82.26887 42.78371 -82.30744 42.82225 -82.34855 42.85933 -82.39209 42.89486 -82.43795 42.92877 -82.45184 42.9384</ns1:posList>
+                                                        </ns1:LinearRing>
+                                                    </ns1:exterior>
+                                                </ns1:PolygonPatch>
+                                            </ns1:patches>
+                                        </ns3:Surface>
+                                    </ns3:horizontalProjection>
+                                </ns3:AirspaceVolume>
+                            </ns3:theAirspaceVolume>
+                        </ns3:AirspaceGeometryComponent>
+                    </ns3:geometryComponent>
+                </ns3:AirspaceTimeSlice>
+            </ns3:timeSlice>
+        </ns3:Airspace>
+    </ns8:hasMember>
+</ns8:AIXMBasicMessage>
