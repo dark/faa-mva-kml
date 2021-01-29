@@ -22,7 +22,7 @@ import attr
 from typing import List
 from xml.etree import ElementTree
 
-# Constant namespaces used in all XML files. See XML file headers.
+# Constant namespaces used in all input XML files. See XML file headers.
 NAMESPACES = {
     "ns2": "http://www.w3.org/1999/xlink",
     "ns1": "http://www.opengis.net/gml/3.2",
@@ -40,6 +40,10 @@ class Position:
     lat = attr.ib()
     long = attr.ib()
 
+    def comma_z(self) -> str:
+        """Comma-separated representation, including elevation."""
+        return "{},{},0".format(self.long, self.lat)
+
 
 class Airspace:
     """Class representing a chunk of airspace in the MVA chart."""
@@ -54,6 +58,7 @@ class Airspace:
     vertexes: List[Position] = ...
 
     def __init__(self, element: ElementTree.Element):
+        """Creates an airspace representation from an XML element."""
         self.name = element.find("ns3:name", NAMESPACES).text
         volume = element.find(
             "ns3:geometryComponent/ns3:AirspaceGeometryComponent/ns3:theAirspaceVolume/ns3:AirspaceVolume",
@@ -81,6 +86,9 @@ class Airspace:
 
 
 class Chart:
+    # All airspaces in this chart.
+    airspaces: List[Airspace] = ...
+
     def __init__(self, filename: str):
         tree = ElementTree.parse(filename)
         root = tree.getroot()
