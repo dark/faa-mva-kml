@@ -37,6 +37,17 @@ NAMESPACES = {
 }
 
 
+class Palette:
+    def default():
+        while True:
+            for color in [
+                simplekml.Color.red,
+                simplekml.Color.green,
+                simplekml.Color.chocolate,
+            ]:
+                yield color
+
+
 @attr.s
 class Position:
     lat = attr.ib()
@@ -107,12 +118,16 @@ class Chart:
 
     def write_kml(self, filename: str):
         kml = simplekml.Kml()
+        palette = Palette.default()
         # Have a "pretty" document name.
         kml.document.name = os.path.basename(filename).split(".")[0]
         for airspace in self.airspaces:
-            kml.newpolygon(
-                name=airspace.name,
+            poly = kml.newpolygon(
+                name="{} - {} ft".format(airspace.name, airspace.floor),
                 outerboundaryis=[p.tuple_z() for p in airspace.vertexes],
+            )
+            poly.style.polystyle.color = simplekml.Color.changealphaint(
+                100, next(palette)
             )
         kml.save(filename)
 
