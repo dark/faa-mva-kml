@@ -21,6 +21,7 @@ import argparse
 import attr
 import os
 import simplekml
+from shapely.geometry import Polygon
 from typing import List, Tuple
 from xml.etree import ElementTree
 
@@ -101,6 +102,11 @@ class Airspace:
                 Position(lat=float(coords[i + 1]), long=float(coords[i]))
             )
 
+    def representative_point(self) -> Position:
+        shape = Polygon([p.tuple_z() for p in self.vertexes])
+        point = shape.representative_point()
+        return Position(lat=point.y, long=point.x)
+
 
 class Chart:
     # All airspaces in this chart.
@@ -126,8 +132,20 @@ class Chart:
                 name="{} - {} ft".format(airspace.name, airspace.floor),
                 outerboundaryis=[p.tuple_z() for p in airspace.vertexes],
             )
-            poly.style.polystyle.color = simplekml.Color.changealphaint(
-                100, next(palette)
+
+            # Same color for the polygon fill and its outline
+            poly_color = next(palette)
+            poly.style.linestyle.color = poly_color
+            poly.style.linestyle.width = 1
+            poly.style.polystyle.color = simplekml.Color.changealphaint(100, poly_color)
+
+            # Select a good place to put the label for this airspace.
+            point = kml.newpoint(name="{}".format(int(airspace.floor)))
+            point.coords = [airspace.representative_point().tuple_z()]
+            # We don't need the icon, make it quite small.
+            point.style.iconstyle.scale = 0.1
+            point.style.iconstyle.icon.href = (
+                "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png"
             )
         kml.save(filename)
 
