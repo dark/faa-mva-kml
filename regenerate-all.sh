@@ -32,13 +32,13 @@ done
 mkdir -p "${TMPDIR}/work/"
 mkdir -p "${TMPDIR}/contentpack/"
 
-# Iterate through all unique ATC identifiers and generate content packs.
+# Iterate through all unique TRACON identifiers and generate content packs.
 pushd "${TMPDIR}/work/"
-for id in $(find "${D}/kml/" -type f | sed 's:.*/kml/::' | cut -f 1 -d _ | sort | uniq); do
+for id in $(find "${TMPDIR}/kml/" -type f | sed "s:${TMPDIR}/kml/::" | cut -f 1 -d _ | sort | uniq); do
   packname="MVA-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${D}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp ${TMPDIR}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
   "name": "MVA Charts for ${id} $(date "+%Y.%m.%d")",
