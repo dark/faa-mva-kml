@@ -1,9 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
     <Document id="1">
+        <Style id="6">
+            <LineStyle id="7">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="8">
+                <color>640000ff</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="11">
+            <IconStyle id="12">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="13">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="18">
+            <LineStyle id="19">
+                <color>ff008000</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="20">
+                <color>64008000</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="23">
+            <IconStyle id="24">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="25">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="30">
+            <LineStyle id="31">
+                <color>ff1e69d2</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="32">
+                <color>641e69d2</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="35">
+            <IconStyle id="36">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="37">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="42">
+            <LineStyle id="43">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="44">
+                <color>640000ff</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="47">
+            <IconStyle id="48">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="49">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
         <name>ZLC_BZN_MVA_2020</name>
         <Placemark id="3">
-            <name>UBZN02</name>
+            <name>UBZN02 - 9000 ft</name>
+            <styleUrl>#6</styleUrl>
             <Polygon id="2">
                 <outerBoundaryIs>
                     <LinearRing id="4">
@@ -12,35 +105,66 @@
                 </outerBoundaryIs>
             </Polygon>
         </Placemark>
-        <Placemark id="7">
-            <name>UBZN06</name>
-            <Polygon id="6">
+        <Placemark id="10">
+            <name>9000</name>
+            <styleUrl>#11</styleUrl>
+            <Point id="9">
+                <coordinates>-111.52614990449538,45.92621,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="15">
+            <name>UBZN06 - 9700 ft</name>
+            <styleUrl>#18</styleUrl>
+            <Polygon id="14">
                 <outerBoundaryIs>
-                    <LinearRing id="8">
+                    <LinearRing id="16">
                         <coordinates>-111.21833,45.95091,0.0 -111.228,45.94316,0.0 -111.36111,45.95238,0.0 -111.40823,45.9726,0.0 -111.37015,46.12177,0.0 -111.37347,46.25484,0.0 -111.33976,46.25279,0.0 -111.22694,46.24583,0.0 -111.15749,46.21131,0.0 -111.13509,46.12939,0.0 -111.21063,46.0859,0.0 -111.21956,46.00707,0.0 -111.20147,45.96397,0.0 -111.21833,45.95091,0.0</coordinates>
                     </LinearRing>
                 </outerBoundaryIs>
             </Polygon>
         </Placemark>
-        <Placemark id="11">
-            <name>UBZN12</name>
-            <Polygon id="10">
+        <Placemark id="22">
+            <name>9700</name>
+            <styleUrl>#23</styleUrl>
+            <Point id="21">
+                <coordinates>-111.27710310802959,46.103835000000004,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="27">
+            <name>UBZN12 - 11000 ft</name>
+            <styleUrl>#30</styleUrl>
+            <Polygon id="26">
                 <outerBoundaryIs>
-                    <LinearRing id="12">
+                    <LinearRing id="28">
                         <coordinates>-111.11736,45.93822,0.0 -111.11241,45.87848,0.0 -111.08981,45.84706,0.0 -111.11139,45.83239,0.0 -111.15942,45.86481,0.0 -111.17583,45.90528,0.0 -111.17187,45.9514,0.0 -111.20147,45.96397,0.0 -111.21956,46.00707,0.0 -111.21063,46.0859,0.0 -111.13509,46.12939,0.0 -110.99441,46.11709,0.0 -110.8615,45.99268,0.0 -110.92629,46.02219,0.0 -111.00847,46.03004,0.0 -111.06682,46.01193,0.0 -111.10289,45.98072,0.0 -111.11736,45.93822,0.0</coordinates>
                     </LinearRing>
                 </outerBoundaryIs>
             </Polygon>
         </Placemark>
-        <Placemark id="15">
-            <name>UBZN13</name>
-            <Polygon id="14">
+        <Placemark id="34">
+            <name>11000</name>
+            <styleUrl>#35</styleUrl>
+            <Point id="33">
+                <coordinates>-111.15349453496188,45.9867,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="39">
+            <name>UBZN13 - 11000 ft</name>
+            <styleUrl>#42</styleUrl>
+            <Polygon id="38">
                 <outerBoundaryIs>
-                    <LinearRing id="16">
+                    <LinearRing id="40">
                         <coordinates>-110.53532,45.67322,0.0 -110.58976,45.61404,0.0 -110.63031,45.57237,0.0 -110.7288,45.56532,0.0 -110.79015,45.592,0.0 -110.85535,45.61057,0.0 -110.9254,45.60717,0.0 -110.97974,45.57606,0.0 -111.60146,45.51351,0.0 -111.74655,45.50732,0.0 -111.70699,45.60312,0.0 -111.63722,45.63081,0.0 -111.44801,45.65593,0.0 -111.37277,45.66205,0.0 -111.10833,45.66667,0.0 -111.08206,45.69586,0.0 -111.12582,45.77323,0.0 -111.11139,45.83239,0.0 -111.08981,45.84706,0.0 -111.0832,45.82167,0.0 -111.07425,45.77631,0.0 -111.05654,45.76614,0.0 -111.03815,45.74279,0.0 -111.01565,45.72558,0.0 -110.98429,45.71188,0.0 -110.94467,45.70633,0.0 -110.90779,45.70894,0.0 -110.87273,45.7184,0.0 -110.81898,45.73658,0.0 -110.53532,45.67322,0.0</coordinates>
                     </LinearRing>
                 </outerBoundaryIs>
             </Polygon>
+        </Placemark>
+        <Placemark id="46">
+            <name>11000</name>
+            <styleUrl>#47</styleUrl>
+            <Point id="45">
+                <coordinates>-110.83912338311818,45.68454,0.0</coordinates>
+            </Point>
         </Placemark>
     </Document>
 </kml>

@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
     <Document id="1">
+        <Style id="6">
+            <LineStyle id="7">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="8">
+                <color>640000ff</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="11">
+            <IconStyle id="12">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="13">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
         <name>D21_MVA_FUS5_2019</name>
         <Placemark id="3">
-            <name>A</name>
+            <name>A - 3000 ft</name>
+            <styleUrl>#6</styleUrl>
             <Polygon id="2">
                 <outerBoundaryIs>
                     <LinearRing id="4">
@@ -11,6 +35,13 @@
                     </LinearRing>
                 </outerBoundaryIs>
             </Polygon>
+        </Placemark>
+        <Placemark id="10">
+            <name>3000</name>
+            <styleUrl>#11</styleUrl>
+            <Point id="9">
+                <coordinates>-83.37930927430526,42.207555,0.0</coordinates>
+            </Point>
         </Placemark>
     </Document>
 </kml>

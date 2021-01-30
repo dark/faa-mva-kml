@@ -1,9 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
     <Document id="1">
+        <Style id="6">
+            <LineStyle id="7">
+                <color>ff0000ff</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="8">
+                <color>640000ff</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="11">
+            <IconStyle id="12">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="13">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+        <Style id="18">
+            <LineStyle id="19">
+                <color>ff008000</color>
+                <colorMode>normal</colorMode>
+                <width>1</width>
+            </LineStyle>
+            <PolyStyle id="20">
+                <color>64008000</color>
+                <colorMode>normal</colorMode>
+                <fill>1</fill>
+                <outline>1</outline>
+            </PolyStyle>
+        </Style>
+        <Style id="23">
+            <IconStyle id="24">
+                <colorMode>normal</colorMode>
+                <scale>0.1</scale>
+                <heading>0</heading>
+                <Icon id="25">
+                    <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
         <name>AVP_MVA_FUS5_2019</name>
         <Placemark id="3">
-            <name>A</name>
+            <name>A - 4000 ft</name>
+            <styleUrl>#6</styleUrl>
             <Polygon id="2">
                 <outerBoundaryIs>
                     <LinearRing id="4">
@@ -12,15 +59,30 @@
                 </outerBoundaryIs>
             </Polygon>
         </Placemark>
-        <Placemark id="7">
-            <name>B</name>
-            <Polygon id="6">
+        <Placemark id="10">
+            <name>4000</name>
+            <styleUrl>#11</styleUrl>
+            <Point id="9">
+                <coordinates>-75.70591505344495,41.304199999999994,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="15">
+            <name>B - 5400 ft</name>
+            <styleUrl>#18</styleUrl>
+            <Polygon id="14">
                 <outerBoundaryIs>
-                    <LinearRing id="8">
+                    <LinearRing id="16">
                         <coordinates>-74.55451,41.80136,0.0 -74.56444,41.80246,0.0 -74.57523,41.80448,0.0 -74.64194,41.81746,0.0 -74.6602,41.82139,0.0 -75.02061,41.90974,0.0 -75.04009,41.91751,0.0 -75.05718,41.92797,0.0 -75.22734,42.05047,0.0 -75.2414,42.06321,0.0 -75.25186,42.07775,0.0 -75.25831,42.09353,0.0 -75.26051,42.10994,0.0 -75.26052,42.11244,0.0 -75.25837,42.12886,0.0 -75.25197,42.14465,0.0 -75.22702,42.17965,0.0 -75.21659,42.19421,0.0 -75.20253,42.20697,0.0 -75.18757,42.21727,0.0 -75.12815,42.19735,0.0 -75.07011,42.17528,0.0 -75.01361,42.15112,0.0 -74.95877,42.12492,0.0 -74.90574,42.09675,0.0 -74.85463,42.06667,0.0 -74.80557,42.03475,0.0 -74.75868,42.00106,0.0 -74.75701,41.99979,0.0 -74.71247,41.96434,0.0 -74.67033,41.9273,0.0 -74.63068,41.88873,0.0 -74.59362,41.84874,0.0 -74.55924,41.80742,0.0 -74.55451,41.80136,0.0</coordinates>
                     </LinearRing>
                 </outerBoundaryIs>
             </Polygon>
+        </Placemark>
+        <Placemark id="22">
+            <name>5400</name>
+            <styleUrl>#23</styleUrl>
+            <Point id="21">
+                <coordinates>-74.98211511061224,42.017905,0.0</coordinates>
+            </Point>
         </Placemark>
     </Document>
 </kml>
