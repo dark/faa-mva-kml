@@ -20,21 +20,22 @@
 D=$(readlink -f "$0" | xargs dirname)
 TMPDIR=$(mktemp -d)
 
-# Regenerate all KML files first.
-mkdir -p "${TMPDIR}/kml/"
-find "${D}/faa-xml/" -name '*.xml' | while read input; do
-  output="${TMPDIR}/kml/$(basename "${input}" | sed 's/\.xml//').kml"
-  echo "  ${input} -> ${output}"
-  "${D}/xml2kml.py" "${input}" -o "${output}"
-done
-
-# Create a work and final directory to store the content packs.
+# Create all temporary directories
 mkdir -p "${TMPDIR}/work/"
+mkdir -p "${TMPDIR}/kml/"
 mkdir -p "${TMPDIR}/contentpack/"
 
-# Iterate through all unique TRACON identifiers and generate content packs.
-pushd "${TMPDIR}/work/"
-for id in $(find "${TMPDIR}/kml/" -type f | sed "s:${TMPDIR}/kml/::" | cut -f 1 -d _ | sort | uniq); do
+# Generate a KML file given its XML input.
+function generate_kml() {
+  input="${1}"
+  output="${TMPDIR}/kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
+  echo "  ${input} -> ${output}"
+  "${D}/xml2kml.py" "${input}" -o "${output}"
+}
+
+# Generate a contentpack file for a given TRACON identifier.
+function generate_contentpack() {
+  id="${1}"
   packname="MVA-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
@@ -48,6 +49,17 @@ for id in $(find "${TMPDIR}/kml/" -type f | sed "s:${TMPDIR}/kml/::" | cut -f 1 
 }
 EOF
   zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
+}
+
+# Regenerate all KML files first.
+find "${D}/faa-xml/" -name '*.xml' | while read input; do
+  generate_kml "${input}"
+done
+
+# Iterate through all unique TRACON identifiers and generate content packs.
+pushd "${TMPDIR}/work/"
+for id in $(find "${TMPDIR}/kml/" -type f | sed "s:${TMPDIR}/kml/::" | cut -f 1 -d _ | sort | uniq); do
+  generate_contentpack "${id}"
 done
 popd
 
