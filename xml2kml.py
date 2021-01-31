@@ -37,6 +37,10 @@ NAMESPACES = {
     "ns8": "http://www.aixm.aero/schema/5.1/message",
 }
 
+# Minimum and maximum alpha for the KML color gradients.
+MIN_ALPHA = 50
+MAX_ALPHA = 130
+
 
 class Palette:
     def default():
@@ -82,7 +86,7 @@ class Airspace:
             "ns3:geometryComponent/ns3:AirspaceGeometryComponent/ns3:theAirspaceVolume/ns3:AirspaceVolume",
             NAMESPACES,
         )
-        self.floor = volume.find("ns3:minimumLimit", NAMESPACES).text
+        self.floor = int(volume.find("ns3:minimumLimit", NAMESPACES).text)
         coords = volume.find(
             "ns3:horizontalProjection/ns3:Surface/ns1:patches/ns1:PolygonPatch/ns1:exterior/ns1:LinearRing/ns1:posList",
             NAMESPACES,
@@ -127,17 +131,26 @@ class Chart:
         palette = Palette.default()
         # Have a "pretty" document name.
         kml.document.name = os.path.basename(filename).split(".")[0]
+        # Get minimum and maximum airspace floors, to apply color
+        # gradients to the map.
+        min_floor = min([a.floor for a in self.airspaces])
+        max_floor = max([a.floor for a in self.airspaces])
         for airspace in self.airspaces:
             poly = kml.newpolygon(
                 name="{} - {} ft".format(airspace.name, airspace.floor),
                 outerboundaryis=[p.tuple_z() for p in airspace.vertexes],
             )
 
-            # Same color for the polygon fill and its outline
+            # Same color for the polygon fill and its outline.
+            gradient = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * (
+                airspace.floor - min_floor
+            ) / (max_floor - min_floor)
             poly_color = next(palette)
             poly.style.linestyle.color = poly_color
             poly.style.linestyle.width = 1
-            poly.style.polystyle.color = simplekml.Color.changealphaint(100, poly_color)
+            poly.style.polystyle.color = simplekml.Color.changealphaint(
+                int(gradient), poly_color
+            )
 
             # Select a good place to put the label for this airspace.
             point = kml.newpoint(name="{}".format(int(airspace.floor)))
