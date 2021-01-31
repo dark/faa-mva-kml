@@ -19,6 +19,7 @@
 
 D=$(readlink -f "$0" | xargs dirname)
 TMPDIR=$(mktemp -d)
+export D TMPDIR
 
 # Create all temporary directories
 mkdir -p "${TMPDIR}/work/"
@@ -32,6 +33,7 @@ function generate_kml() {
   echo "  ${input} -> ${output}"
   "${D}/xml2kml.py" "${input}" -o "${output}"
 }
+export -f generate_kml
 
 # Generate a contentpack file for a given TRACON identifier.
 function generate_contentpack() {
@@ -51,10 +53,12 @@ EOF
   zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
 }
 
+echo "Using temporary directory: ${TMPDIR}"
+
 # Regenerate all KML files first.
-find "${D}/faa-xml/" -name '*.xml' | while read input; do
-  generate_kml "${input}"
-done
+echo 'Regenerate all KML files...'
+find "${D}/faa-xml/" -name '*.xml' | parallel --bar generate_kml > /dev/null
+echo 'Regeneration complete.'
 
 # Iterate through all unique TRACON identifiers and generate content packs.
 pushd "${TMPDIR}/work/"
