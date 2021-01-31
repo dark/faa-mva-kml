@@ -46,9 +46,13 @@ class Palette:
     def default():
         while True:
             for color in [
-                simplekml.Color.red,
-                simplekml.Color.green,
-                simplekml.Color.chocolate,
+                simplekml.Color.teal,
+                ## The colors I originally experimented with.
+                # simplekml.Color.red,
+                # simplekml.Color.green,
+                # simplekml.Color.chocolate,
+                ## This is a good alternative to teal.
+                # 'FFD27878',
             ]:
                 yield color
 
@@ -155,7 +159,7 @@ class Chart:
                 ) / (max_floor - min_floor)
             poly_color = next(palette)
             poly.style.linestyle.color = poly_color
-            poly.style.linestyle.width = 1
+            poly.style.linestyle.width = 2
             poly.style.polystyle.color = simplekml.Color.changealphaint(
                 int(gradient), poly_color
             )
