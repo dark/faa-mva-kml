@@ -9,7 +9,7 @@ repository includes automatically generated copies in **KML** format,
 as well as **content packs** that can be easily imported in
 Foreflight.
 
-Content:
+## Content
 
 * The original XML files from the FAA are in the `faa-xml` directory,
   as downloaded from the [official
@@ -23,6 +23,8 @@ Content:
   and its name includes the three-characters identifier of each
   facility. You can lookup the TRACON identifiers at [this
   link](https://www.faa.gov/about/office_org/headquarters_offices/ato/service_units/air_traffic_services/tracon/).
+
+## Instructions
 
 For instructions on how to download and import the Content Packs into
 Foreflight (**recommended**), please browse the `contentpacks`
