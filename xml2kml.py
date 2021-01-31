@@ -146,9 +146,13 @@ class Chart:
             )
 
             # Same color for the polygon fill and its outline.
-            gradient = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * (
-                airspace.floor - min_floor
-            ) / (max_floor - min_floor)
+            if max_floor == min_floor:
+                # Use a constant gradient of all MVAs are the same
+                gradient = (MAX_ALPHA - MIN_ALPHA) / 2
+            else:
+                gradient = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * (
+                    airspace.floor - min_floor
+                ) / (max_floor - min_floor)
             poly_color = next(palette)
             poly.style.linestyle.color = poly_color
             poly.style.linestyle.width = 1
