@@ -126,6 +126,10 @@ class Chart:
         ):
             self.airspaces.append(Airspace(airspace))
 
+        # Sort airspaces in ascending MVA order. This helps with the
+        # layering in the final map.
+        self.airspaces.sort(key=lambda a: a.floor)
+
     def write_kml(self, filename: str):
         kml = simplekml.Kml()
         palette = Palette.default()
