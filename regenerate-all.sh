@@ -41,7 +41,7 @@ function generate_contentpack() {
   packname="MVA-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${TMPDIR}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp ${D}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
   "name": "MVA Charts for ${id} $(date "+%Y.%m.%d")",
@@ -56,24 +56,29 @@ EOF
 echo "Using temporary directory: ${TMPDIR}"
 
 # Regenerate all KML files first.
+echo
 echo 'Regenerate all KML files...'
 find "${D}/faa-xml/" -name '*.xml' | parallel --bar generate_kml > /dev/null
-echo 'Regeneration complete.'
-
-# Iterate through all unique TRACON identifiers and generate content packs.
-pushd "${TMPDIR}/work/"
-for id in $(find "${TMPDIR}/kml/" -type f | sed "s:${TMPDIR}/kml/::" | cut -f 1 -d _ | sort | uniq); do
-  generate_contentpack "${id}"
-done
-popd
-
-# Update all files in place.
-echo
-echo 'Moving files in place...'
+echo 'Regeneration complete, moving files into the repo...'
 rm -rf "${D}/kml/"
 mv "${TMPDIR}/kml/" "${D}/kml/"
-rm -rf "${D}/contentpack/"
-mv "${TMPDIR}/contentpack/" "${D}/contentpack/"
+echo 'KML files moved into the repo.'
+
+# Iterate through all unique TRACON identifiers and generate content packs.
+echo
+echo 'Regenerate contentpack files with modifications...'
+pushd "${TMPDIR}/work/" &> /dev/null
+for id in $(git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq); do
+  generate_contentpack "${id}"
+done
+popd &> /dev/null
+if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
+  echo 'Done regenerating contentpack files, moving files into the repo...'
+  mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
+  echo 'Contentpack files moved into the repo.'
+else
+  echo 'No contentpack file was regenerated.'
+fi
 
 # Cleanup
 rm -rf "${TMPDIR}/"
