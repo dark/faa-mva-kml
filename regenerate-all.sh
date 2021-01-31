@@ -52,6 +52,7 @@ function generate_contentpack() {
 EOF
   zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
 }
+export -f generate_contentpack
 
 echo "Using temporary directory: ${TMPDIR}"
 
@@ -68,9 +69,7 @@ echo 'KML files moved into the repo.'
 echo
 echo 'Regenerate contentpack files with modifications...'
 pushd "${TMPDIR}/work/" &> /dev/null
-for id in $(git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq); do
-  generate_contentpack "${id}"
-done
+git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --bar generate_contentpack > /dev/null
 popd &> /dev/null
 if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
   echo 'Done regenerating contentpack files, moving files into the repo...'
