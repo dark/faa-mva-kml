@@ -41,7 +41,17 @@ files are downloaded as plain text), please download them on your
 computer and import them with iTunes, or use a Content Pack instead
 (recommended).
 
-# Disclaimer
+## History
+
+This work was inspired by some episodes of the [Opposing
+Bases](https://www.opposingbases.com/) podcast, where the hosts
+discussed various uses of the MVA charts by the Air Traffic
+Controllers. Specifically, [episode
+161](https://www.opposingbases.com/ob161-heading-shmeading/) included
+feedback from one of the listeners about how to convert the XML
+originals into KML in a semi-automated way.
+
+# Legal Disclaimer
 
 All MVA chart files are property of the FAA. The attached license
 notice applies to the conversion scripts only.
