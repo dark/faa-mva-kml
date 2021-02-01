@@ -38,7 +38,7 @@ NAMESPACES = {
 }
 
 # Minimum and maximum alpha for the KML color gradients.
-MIN_ALPHA = 50
+MIN_ALPHA = 60
 MAX_ALPHA = 130
 
 
@@ -46,13 +46,15 @@ class Palette:
     def default():
         while True:
             for color in [
-                simplekml.Color.teal,
                 ## The colors I originally experimented with.
                 # simplekml.Color.red,
                 # simplekml.Color.green,
                 # simplekml.Color.chocolate,
+                ## Teal is a good color, but it is not always visible
+                ## against water bodies of VFR charts.
+                # simplekml.Color.teal,
                 ## This is a good alternative to teal.
-                # 'FFD27878',
+                'FFD27878',
             ]:
                 yield color
 
@@ -159,7 +161,7 @@ class Chart:
                 ) / (max_floor - min_floor)
             poly_color = next(palette)
             poly.style.linestyle.color = poly_color
-            poly.style.linestyle.width = 2
+            poly.style.linestyle.width = 3
             poly.style.polystyle.color = simplekml.Color.changealphaint(
                 int(gradient), poly_color
             )
