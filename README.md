@@ -31,6 +31,26 @@ the Southern California TRACON MVA maps are imported:
   facility. You can lookup the TRACON identifiers at [this
   link](https://www.faa.gov/about/office_org/headquarters_offices/ato/service_units/air_traffic_services/tracon/).
 
+Each TRACON facility usually publishes two maps, named `FUS3` and
+`FUS5`. To the best of my knowledge, they are generated to give 3 and
+5 miles, respectively, horizontal clearance from terrain and
+obstacles. The `FUS5` maps are usually larger and cover much more
+airspace.
+
+You can see how the Los Angeles, CA area (managed by the Southern
+California TRACON, or `SCT`) is covered by the current `SCT_MVA_FUS3`
+map:
+
+<p align="center">
+  <img width="600" src="docs/img/SCT3.png" />
+</p>
+
+As opposed to the current `SCT_MVA_FUS5` map:
+
+<p align="center">
+  <img width="600" src="docs/img/SCT5.png" />
+</p>
+
 ## Instructions
 
 For instructions on how to download and import the Content Packs into
