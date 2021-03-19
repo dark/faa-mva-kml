@@ -9,6 +9,13 @@ repository includes automatically generated copies in **KML** format,
 as well as **content packs** that can be easily imported in
 Foreflight.
 
+As an example, this is how the MVAs are drawn over San Diego, CA, once
+the Southern California TRACON MVA maps are imported:
+
+<p align="center">
+  <img width="600" src="docs/img/san_diego.png" />
+</p>
+
 ## Content
 
 * The original XML files from the FAA are in the `faa-xml` directory,
