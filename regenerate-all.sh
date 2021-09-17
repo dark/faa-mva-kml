@@ -30,7 +30,7 @@ mkdir -p "${TMPDIR}/contentpack/"
 # Download an XML file.
 function download_xml() {
   # Some links are dangling, ignore errors.
-  wget -q "${1}" || true
+  wget --user-agent="" -q "${1}" || true
 }
 export -f download_xml
 
@@ -68,7 +68,7 @@ echo "Using temporary directory: ${TMPDIR}"
 echo
 echo 'List all available XML files...'
 # Some links are dangling, hence ignore errors returned by wget.
-wget -r -l1 -t1 -np -A ".xml" --spider https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
+wget --user-agent="" -r -l1 -t1 -np -A ".xml" --spider https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
 grep '^--.*xml$' "${TMPDIR}/work/wget.out" | cut -d ' ' -f 4- > "${TMPDIR}/work/urls.txt"
 echo "$(wc -l "${TMPDIR}/work/urls.txt" | cut -d ' ' -f 1) files are available"
 echo
