@@ -26,6 +26,7 @@ mkdir -p "${TMPDIR}/work/"
 mkdir -p "${TMPDIR}/faa-xml/"
 mkdir -p "${TMPDIR}/kml/"
 mkdir -p "${TMPDIR}/contentpack/"
+mkdir -p "${TMPDIR}/tmp/"
 
 # Download an XML file.
 function download_xml() {
@@ -68,7 +69,9 @@ echo "Using temporary directory: ${TMPDIR}"
 echo
 echo 'List all available XML files...'
 # Some links are dangling, hence ignore errors returned by wget.
+pushd "${TMPDIR}/tmp/" &> /dev/null
 wget --user-agent="" -r -l1 -t1 -np -A ".xml" --spider https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
+popd &> /dev/null
 grep '^--.*xml$' "${TMPDIR}/work/wget.out" | cut -d ' ' -f 4- > "${TMPDIR}/work/urls.txt"
 echo "$(wc -l "${TMPDIR}/work/urls.txt" | cut -d ' ' -f 1) files are available"
 echo
