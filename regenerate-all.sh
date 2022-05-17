@@ -60,7 +60,7 @@ echo "Using temporary directory: ${TMPDIR}"
 
 # Download all XML files from the FAA website.
 echo
-echo 'Download all XML files...'
+echo '  * Download all XML files...'
 pushd "${TMPDIR}/faa-xml/" &> /dev/null
 wget --user-agent="" -r -l1 -t1 -np -nd -A ".xml" -w 0.1 --random-wait https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
 popd &> /dev/null
@@ -71,8 +71,8 @@ echo 'XML files moved into the repo.'
 
 # Regenerate all KML files.
 echo
-echo 'Regenerate all KML files...'
-find "${D}/faa-xml/" -name '*.xml' | parallel --bar generate_kml > /dev/null
+echo '  * Regenerate all KML files...'
+find "${D}/faa-xml/" -name '*.xml' | parallel --eta generate_kml > /dev/null
 echo 'Regeneration complete, moving files into the repo...'
 rm -rf "${D}/kml/"
 mv "${TMPDIR}/kml/" "${D}/kml/"
@@ -80,9 +80,9 @@ echo 'KML files moved into the repo.'
 
 # Iterate through all unique TRACON identifiers and generate content packs.
 echo
-echo 'Regenerate contentpack files with modifications...'
+echo '  * Regenerate contentpack files with modifications...'
 pushd "${TMPDIR}/work/" &> /dev/null
-git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --bar generate_contentpack > /dev/null
+git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack > /dev/null
 popd &> /dev/null
 if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
   echo 'Done regenerating contentpack files, moving files into the repo...'
