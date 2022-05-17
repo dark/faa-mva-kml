@@ -28,13 +28,6 @@ mkdir -p "${TMPDIR}/kml/"
 mkdir -p "${TMPDIR}/contentpack/"
 mkdir -p "${TMPDIR}/tmp/"
 
-# Download an XML file.
-function download_xml() {
-  # Some links are dangling, ignore errors.
-  wget --user-agent="" -q "${1}" || true
-}
-export -f download_xml
-
 # Generate a KML file given its XML input.
 function generate_kml() {
   input="${1}"
@@ -67,17 +60,9 @@ echo "Using temporary directory: ${TMPDIR}"
 
 # Download all XML files from the FAA website.
 echo
-echo 'List all available XML files...'
-# Some links are dangling, hence ignore errors returned by wget.
-pushd "${TMPDIR}/tmp/" &> /dev/null
-wget --user-agent="" -r -l1 -t1 -np -A ".xml" --spider https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
-popd &> /dev/null
-grep '^--.*xml$' "${TMPDIR}/work/wget.out" | cut -d ' ' -f 4- > "${TMPDIR}/work/urls.txt"
-echo "$(wc -l "${TMPDIR}/work/urls.txt" | cut -d ' ' -f 1) files are available"
-echo
 echo 'Download all XML files...'
 pushd "${TMPDIR}/faa-xml/" &> /dev/null
-cat "${TMPDIR}/work/urls.txt" | parallel --bar download_xml > /dev/null
+wget --user-agent="" -r -l1 -t1 -np -nd -A ".xml" -w 0.1 --random-wait https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
 popd &> /dev/null
 echo "$(find "${TMPDIR}/faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
 rm -rf "${D}/faa-xml/"
