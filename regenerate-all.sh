@@ -62,7 +62,7 @@ echo "Using temporary directory: ${TMPDIR}"
 echo
 echo '  * Download all XML files...'
 pushd "${TMPDIR}/faa-xml/" &> /dev/null
-wget --user-agent="" -r -l1 -t1 -np -nd -A ".xml" -w 0.1 --random-wait https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
+wget --user-agent="" -r -l1 -t1 -np -nd -H --accept-regex 'aeronav.faa.gov/.*xml' -A ".xml" -w 0.1 --random-wait https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
 popd &> /dev/null
 echo "$(find "${TMPDIR}/faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
 rm -rf "${D}/faa-xml/"
