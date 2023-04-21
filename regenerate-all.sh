@@ -34,6 +34,11 @@ function generate_kml() {
   output="${TMPDIR}/kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
   echo "  ${input} -> ${output}"
   "${D}/xml2kml.py" "${input}" -o "${output}"
+  ret=$?
+  if [[ $ret -ne 0 ]]; then
+    echo "  FAILED: ${input} -> ${output}" >&2
+  fi
+  return $ret
 }
 export -f generate_kml
 
@@ -72,7 +77,7 @@ echo 'XML files moved into the repo.'
 # Regenerate all KML files.
 echo
 echo '  * Regenerate all KML files...'
-find "${D}/faa-xml/" -name '*.xml' | parallel --eta generate_kml > /dev/null
+find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed --halt now,fail=1 generate_kml > /dev/null
 echo 'Regeneration complete, moving files into the repo...'
 rm -rf "${D}/kml/"
 mv "${TMPDIR}/kml/" "${D}/kml/"
