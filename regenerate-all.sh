@@ -102,7 +102,7 @@ echo 'XML files moved into the repo.'
 # Regenerate all KML files.
 echo
 echo '  * Regenerate all KML files...'
-find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed --halt now,fail=1 generate_kml > /dev/null
+find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml > /dev/null
 echo 'Regeneration complete, moving files into the repo...'
 rm -rf "${D}/kml/"
 mv "${TMPDIR}/kml/" "${D}/kml/"
