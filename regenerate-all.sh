@@ -32,13 +32,38 @@ mkdir -p "${TMPDIR}/tmp/"
 function generate_kml() {
   input="${1}"
   output="${TMPDIR}/kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
+  # Always try to convert the file.
   echo "  ${input} -> ${output}"
   "${D}/xml2kml.py" "${input}" -o "${output}"
-  ret=$?
-  if [[ $ret -ne 0 ]]; then
-    echo "  FAILED: ${input} -> ${output}" >&2
+  conversion_status=$?
+  # See if the input file is in the blacklist.
+  grep -q "$(basename "${input}")" "${D}/blacklist.txt"
+  blacklist_status=$?
+
+  if [[ $conversion_status -eq 0 ]]; then
+    # Successful conversion case.
+    if [[ $blacklist_status -eq 0 ]]; then
+      # Warn that this file is in the blacklist, despite converting
+      # successfully. This will help remove items from the blacklist
+      # once they get fixed.
+      echo "  WARNING: ${input} is in the blacklist, but converts successfully" >&2
+    fi
+    # Always return success on a successful conversion.
+    return 0
   fi
-  return $ret
+
+  # Unsuccessful conversion case
+  echo "  INFO: failed to convert ${input} -> ${output}" >&2
+  if [[ $blacklist_status -eq 0 ]]; then
+    # Since this file is in the blacklist, ignore the error. Delete
+    # the output file to avoid issues.
+    rm -f "${output}"
+    return 0
+  fi
+
+  # This input file is not blacklisted, return an error.
+  echo "  ERROR: please add '$(basename "${input}")' to the blacklist to suppress this error." >&2
+  return $conversion_status
 }
 export -f generate_kml
 
