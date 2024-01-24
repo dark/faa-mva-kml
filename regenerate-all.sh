@@ -22,8 +22,9 @@ export D
 
 # Generate a KML file given its XML input.
 function generate_kml() {
-  input="${1}"
-  output="${TMPDIR}/kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
+  map_type="${1}"
+  input="${2}"
+  output="${TMPDIR}/${map_type}-kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
   # Always try to convert the file.
   echo "  ${input} -> ${output}"
   "${D}/xml2kml.py" "${input}" -o "${output}"
@@ -66,7 +67,7 @@ function generate_contentpack() {
   packname="${map_type}-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${D}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp ${D}/${map_type,,}-kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
   "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
@@ -88,8 +89,8 @@ function do_work() {
   TMPDIR=$(mktemp -d)
   export TMPDIR
   mkdir -p "${TMPDIR}/work/"
-  mkdir -p "${TMPDIR}/faa-xml/"
-  mkdir -p "${TMPDIR}/kml/"
+  mkdir -p "${TMPDIR}/${map_type_lowercase}-faa-xml/"
+  mkdir -p "${TMPDIR}/${map_type_lowercase}-kml/"
   mkdir -p "${TMPDIR}/contentpack/"
   mkdir -p "${TMPDIR}/tmp/"
   echo "Using temporary directory: ${TMPDIR}"
@@ -97,29 +98,30 @@ function do_work() {
   # Download all XML files from the FAA website.
   echo
   echo '  * Download all XML files...'
-  pushd "${TMPDIR}/faa-xml/" &> /dev/null
+  pushd "${TMPDIR}/${map_type_lowercase}-faa-xml/" &> /dev/null
   wget --user-agent="" -r -l1 -t1 -np -nd -H --accept-regex 'aeronav.faa.gov/.*xml' -A ".xml" -w 0.1 --random-wait \
        "https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/${map_type_lowercase}" 2> "${TMPDIR}/work/wget.out" || true
   popd &> /dev/null
-  echo "$(find "${TMPDIR}/faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
-  rm -rf "${D}/faa-xml/"
-  mv "${TMPDIR}/faa-xml/" "${D}/faa-xml/"
+  echo "$(find "${TMPDIR}/${map_type_lowercase}-faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
+  rm -rf "${D}/${map_type_lowercase}-faa-xml/"
+  mv "${TMPDIR}/${map_type_lowercase}-faa-xml/" "${D}/${map_type_lowercase}-faa-xml/"
   echo 'XML files moved into the repo.'
 
   # Regenerate all KML files.
   echo
   echo '  * Regenerate all KML files...'
-  find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml > /dev/null
+  find "${D}/${map_type_lowercase}-faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml "${map_type_lowercase}" > /dev/null
   echo 'Regeneration complete, moving files into the repo...'
-  rm -rf "${D}/kml/"
-  mv "${TMPDIR}/kml/" "${D}/kml/"
+  rm -rf "${D}/${map_type_lowercase}-kml/"
+  mv "${TMPDIR}/${map_type_lowercase}-kml/" "${D}/${map_type_lowercase}-kml/"
   echo 'KML files moved into the repo.'
 
   # Iterate through all unique TRACON identifiers and generate content packs.
   echo
   echo '  * Regenerate contentpack files with modifications...'
   pushd "${TMPDIR}/work/" &> /dev/null
-  git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack "${map_type_uppercase}" > /dev/null
+  git -C "${D}" status -s | grep " ${map_type_lowercase}-kml/" | sed "s:.* ${map_type_lowercase}-kml/::" | cut -f 1 -d _ | \
+    sort | uniq | parallel --eta generate_contentpack "${map_type_uppercase}" > /dev/null
   popd &> /dev/null
   if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
     echo 'Done regenerating contentpack files, moving files into the repo...'
