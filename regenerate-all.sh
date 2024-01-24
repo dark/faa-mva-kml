@@ -132,8 +132,11 @@ function do_work() {
   fi
 
   # Cleanup
+  echo
   rm -rf "${TMPDIR}/"
+  unset TMPDIR
 }
 
 # main code
 do_work 'mva'
+do_work 'mia'
