@@ -1,7 +1,8 @@
-# FAA Minimum Vectoring Altitude (MVA) Charts as KML Files
+# FAA Minimum Vectoring Altitude (MVA) and Minimum IFR Altitude (MIA) Charts as KML Files
 
 This repository contains a copy of the Minimum Vectoring Altitude
-(MVA) charts from the Federal Aviation Administration (FAA).
+(MVA) and Minimum IFR Altitude (MIA) charts from the Federal Aviation
+Administration (FAA).
 
 The originals are provided by the FAA in PDF and XML format, but they
 are unsuited for automatic import in EFBs like *Foreflight*. This
@@ -18,20 +19,24 @@ the Southern California TRACON MVA maps are imported:
 
 ## Content
 
-* The original XML files from the FAA are in the `faa-xml` directory,
-  as downloaded from the [official
-  website](https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva/).
+* The original XML files from the FAA are in the `mva-faa-xml` and
+  `mia-faa-xml` directories respectively, as downloaded from the
+  [official
+  website](https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/).
 
-* The converted KML files are in the `kml` directory; each chart is
-  available independently, and is named after the original XML file.
+* The converted KML files are in the `mva-kml` and `mia-kml`
+  directories; each chart is available independently, and is named
+  after the original XML file.
 
-* Foreflight content packs are in the `contentpack` directory. Each
-  content pack includes all charts from the same ATC TRACON facility,
-  and its name includes the three-characters identifier of each
-  facility. You can lookup the TRACON identifiers at [this
+* Foreflight content packs are in the `contentpack` directory. There
+  is a single directory for all maps. Each content pack includes all
+  charts from the same ATC TRACON facility of a given type (MVA or
+  MIA), and its name includes the map type and the three-characters
+  identifier of each facility. You can lookup the TRACON identifiers
+  at [this
   link](https://www.faa.gov/about/office_org/headquarters_offices/ato/service_units/air_traffic_services/tracon/).
 
-Each TRACON facility usually publishes two maps, named `FUS3` and
+Each TRACON facility usually publishes two MVA maps, named `FUS3` and
 `FUS5`. To the best of my knowledge, they are generated to give 3 and
 5 miles, respectively, horizontal clearance from terrain and
 obstacles. The `FUS5` maps are usually larger and cover much more
@@ -82,8 +87,8 @@ originals into KML in a semi-automated way.
 
 # Legal Disclaimer
 
-All MVA chart files are property of the FAA. The attached license
-notice applies to the conversion scripts only.
+All MVA and MIA chart files are property of the FAA. The attached
+license notice applies to the conversion scripts only.
 
 All files are provided for educational purposes only. They are not to
 be used as a navigation tool. No claim is made regarding the accuracy
@@ -93,4 +98,4 @@ Please direct any comments and discrepancies in the displayed data to
 the FAA Air Traffic facility in question.
 
 More information at:
-<https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva/>
+<https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/>
