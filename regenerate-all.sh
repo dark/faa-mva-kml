@@ -67,16 +67,17 @@ function generate_kml() {
 }
 export -f generate_kml
 
-# Generate a contentpack file for a given TRACON identifier.
+# Generate a contentpack file for a given map type (MVA/MIA) and TRACON identifier.
 function generate_contentpack() {
-  id="${1}"
-  packname="MVA-${id}"
+  map_type="${1}"
+  id="${2}"
+  packname="${map_type}-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
   cp ${D}/kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
-  "name": "MVA Charts for ${id} $(date "+%Y.%m.%d")",
+  "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
   "abbreviation": "${packname}-v$(date "+%Y.%m.%d")",
   "version": $(date "+%y.%j"),
   "organizationName": "github.com/dark/faa-mva-kml"
@@ -112,7 +113,7 @@ echo 'KML files moved into the repo.'
 echo
 echo '  * Regenerate contentpack files with modifications...'
 pushd "${TMPDIR}/work/" &> /dev/null
-git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack > /dev/null
+git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack 'MVA' > /dev/null
 popd &> /dev/null
 if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
   echo 'Done regenerating contentpack files, moving files into the repo...'
