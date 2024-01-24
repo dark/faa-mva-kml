@@ -79,49 +79,59 @@ EOF
 }
 export -f generate_contentpack
 
-# Create all temporary directories
-TMPDIR=$(mktemp -d)
-export TMPDIR
-mkdir -p "${TMPDIR}/work/"
-mkdir -p "${TMPDIR}/faa-xml/"
-mkdir -p "${TMPDIR}/kml/"
-mkdir -p "${TMPDIR}/contentpack/"
-mkdir -p "${TMPDIR}/tmp/"
-echo "Using temporary directory: ${TMPDIR}"
+function do_work() {
+  map_type_lowercase="${1,,}"
+  map_type_uppercase="${1^^}"
+  echo "Working on ${map_type_uppercase} maps"
 
-# Download all XML files from the FAA website.
-echo
-echo '  * Download all XML files...'
-pushd "${TMPDIR}/faa-xml/" &> /dev/null
-wget --user-agent="" -r -l1 -t1 -np -nd -H --accept-regex 'aeronav.faa.gov/.*xml' -A ".xml" -w 0.1 --random-wait https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/mva 2> "${TMPDIR}/work/wget.out" || true
-popd &> /dev/null
-echo "$(find "${TMPDIR}/faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
-rm -rf "${D}/faa-xml/"
-mv "${TMPDIR}/faa-xml/" "${D}/faa-xml/"
-echo 'XML files moved into the repo.'
+  # Create all temporary directories
+  TMPDIR=$(mktemp -d)
+  export TMPDIR
+  mkdir -p "${TMPDIR}/work/"
+  mkdir -p "${TMPDIR}/faa-xml/"
+  mkdir -p "${TMPDIR}/kml/"
+  mkdir -p "${TMPDIR}/contentpack/"
+  mkdir -p "${TMPDIR}/tmp/"
+  echo "Using temporary directory: ${TMPDIR}"
 
-# Regenerate all KML files.
-echo
-echo '  * Regenerate all KML files...'
-find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml > /dev/null
-echo 'Regeneration complete, moving files into the repo...'
-rm -rf "${D}/kml/"
-mv "${TMPDIR}/kml/" "${D}/kml/"
-echo 'KML files moved into the repo.'
+  # Download all XML files from the FAA website.
+  echo
+  echo '  * Download all XML files...'
+  pushd "${TMPDIR}/faa-xml/" &> /dev/null
+  wget --user-agent="" -r -l1 -t1 -np -nd -H --accept-regex 'aeronav.faa.gov/.*xml' -A ".xml" -w 0.1 --random-wait \
+       "https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/mva_mia/${map_type_lowercase}" 2> "${TMPDIR}/work/wget.out" || true
+  popd &> /dev/null
+  echo "$(find "${TMPDIR}/faa-xml/" -type f -name '*.xml' | wc -l) files were downloaded, moving files into the repo..."
+  rm -rf "${D}/faa-xml/"
+  mv "${TMPDIR}/faa-xml/" "${D}/faa-xml/"
+  echo 'XML files moved into the repo.'
 
-# Iterate through all unique TRACON identifiers and generate content packs.
-echo
-echo '  * Regenerate contentpack files with modifications...'
-pushd "${TMPDIR}/work/" &> /dev/null
-git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack 'MVA' > /dev/null
-popd &> /dev/null
-if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
-  echo 'Done regenerating contentpack files, moving files into the repo...'
-  mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
-  echo 'Contentpack files moved into the repo.'
-else
-  echo 'No contentpack file was regenerated.'
-fi
+  # Regenerate all KML files.
+  echo
+  echo '  * Regenerate all KML files...'
+  find "${D}/faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml > /dev/null
+  echo 'Regeneration complete, moving files into the repo...'
+  rm -rf "${D}/kml/"
+  mv "${TMPDIR}/kml/" "${D}/kml/"
+  echo 'KML files moved into the repo.'
 
-# Cleanup
-rm -rf "${TMPDIR}/"
+  # Iterate through all unique TRACON identifiers and generate content packs.
+  echo
+  echo '  * Regenerate contentpack files with modifications...'
+  pushd "${TMPDIR}/work/" &> /dev/null
+  git -C "${D}" status -s | grep ' kml/' | sed 's:.* kml/::' | cut -f 1 -d _ | sort | uniq | parallel --eta generate_contentpack "${map_type_uppercase}" > /dev/null
+  popd &> /dev/null
+  if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
+    echo 'Done regenerating contentpack files, moving files into the repo...'
+    mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
+    echo 'Contentpack files moved into the repo.'
+  else
+    echo 'No contentpack file was regenerated.'
+  fi
+
+  # Cleanup
+  rm -rf "${TMPDIR}/"
+}
+
+# main code
+do_work 'mva'
