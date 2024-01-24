@@ -18,15 +18,7 @@
 #
 
 D=$(readlink -f "$0" | xargs dirname)
-TMPDIR=$(mktemp -d)
-export D TMPDIR
-
-# Create all temporary directories
-mkdir -p "${TMPDIR}/work/"
-mkdir -p "${TMPDIR}/faa-xml/"
-mkdir -p "${TMPDIR}/kml/"
-mkdir -p "${TMPDIR}/contentpack/"
-mkdir -p "${TMPDIR}/tmp/"
+export D
 
 # Generate a KML file given its XML input.
 function generate_kml() {
@@ -87,6 +79,14 @@ EOF
 }
 export -f generate_contentpack
 
+# Create all temporary directories
+TMPDIR=$(mktemp -d)
+export TMPDIR
+mkdir -p "${TMPDIR}/work/"
+mkdir -p "${TMPDIR}/faa-xml/"
+mkdir -p "${TMPDIR}/kml/"
+mkdir -p "${TMPDIR}/contentpack/"
+mkdir -p "${TMPDIR}/tmp/"
 echo "Using temporary directory: ${TMPDIR}"
 
 # Download all XML files from the FAA website.
