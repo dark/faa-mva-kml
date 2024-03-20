@@ -61,16 +61,20 @@ class Palette:
 
 @attr.s
 class Position:
+    # Degrees of latitude
     lat = attr.ib()
+    # Degrees of longitude
     long = attr.ib()
+    # Elevation, in meters above MSL
+    height = attr.ib()
 
     def comma_z(self) -> str:
         """Comma-separated representation, including elevation."""
-        return "{},{},0".format(self.long, self.lat)
+        return "{},{},{}".format(self.long, self.lat, self.height)
 
     def tuple_z(self) -> Tuple[float, float, float]:
         """Tuple representation, including elevation."""
-        return (self.long, self.lat, 0.0)
+        return (self.long, self.lat, self.height)
 
 
 class Airspace:
@@ -109,13 +113,13 @@ class Airspace:
         self.vertexes = []
         for i in range(0, len(coords), 2):
             self.vertexes.append(
-                Position(lat=float(coords[i + 1]), long=float(coords[i]))
+                Position(lat=float(coords[i + 1]), long=float(coords[i]), height=0.0)
             )
 
     def representative_point(self) -> Position:
         shape = Polygon([p.tuple_z() for p in self.vertexes])
         point = shape.representative_point()
-        return Position(lat=point.y, long=point.x)
+        return Position(lat=point.y, long=point.x, height=0.0)
 
 
 class Chart:
