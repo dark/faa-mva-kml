@@ -42,6 +42,10 @@ MIN_ALPHA = 60
 MAX_ALPHA = 130
 
 
+def feet_to_meters(feet: int) -> float:
+    return feet / 3.281
+
+
 class Palette:
     def default():
         while True:
@@ -113,13 +117,13 @@ class Airspace:
         self.vertexes = []
         for i in range(0, len(coords), 2):
             self.vertexes.append(
-                Position(lat=float(coords[i + 1]), long=float(coords[i]), height=0.0)
+                Position(lat=float(coords[i + 1]), long=float(coords[i]), height=feet_to_meters(self.floor))
             )
 
     def representative_point(self) -> Position:
         shape = Polygon([p.tuple_z() for p in self.vertexes])
         point = shape.representative_point()
-        return Position(lat=point.y, long=point.x, height=0.0)
+        return Position(lat=point.y, long=point.x, height=feet_to_meters(self.floor))
 
 
 class Chart:
@@ -153,6 +157,11 @@ class Chart:
             poly = kml.newpolygon(
                 name="{} - {} ft".format(airspace.name, airspace.floor),
                 outerboundaryis=[p.tuple_z() for p in airspace.vertexes],
+                # When visualized in 3D (e.g. in Google Earth), draw
+                # each airspace at its elevation, and "extend all
+                # sides to the ground".
+                altitudemode=simplekml.AltitudeMode.absolute,
+                extrude=1,
             )
 
             # Same color for the polygon fill and its outline.
