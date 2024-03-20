@@ -5,10 +5,10 @@ This repository contains a copy of the Minimum Vectoring Altitude
 Administration (FAA).
 
 The originals are provided by the FAA in PDF and XML format, but they
-are unsuited for automatic import in EFBs like *Foreflight*. This
-repository includes automatically generated copies in **KML** format,
-as well as **content packs** that can be easily imported in
-Foreflight.
+are unsuited for automatic import in EFBs like *ForeFlight*. This
+repository includes automatically generated copies in **KML** format
+(that can be imported in programs like Google Earth), as well as
+**content packs** (that can be imported in ForeFlight).
 
 As an example, this is how the MVAs are drawn over San Diego, CA, once
 the Southern California TRACON MVA maps are imported:
@@ -28,7 +28,7 @@ the Southern California TRACON MVA maps are imported:
   directories; each chart is available independently, and is named
   after the original XML file.
 
-* Foreflight content packs are in the `contentpack` directory. There
+* ForeFlight content packs are in the `contentpack` directory. There
   is a single directory for all maps. Each content pack includes all
   charts from the same ATC TRACON facility of a given type (MVA or
   MIA), and its name includes the map type and the three-characters
@@ -59,21 +59,25 @@ As opposed to the current `SCT_MVA_FUS5` map:
 ## Instructions
 
 For instructions on how to download and import the Content Packs into
-Foreflight (**recommended**), please browse the `contentpacks`
+ForeFlight (**recommended**), please browse the `contentpacks`
 directory of this repository and download/share them into the
 app. Detailed instructions about how to import Content Packs into
-Foreflight are available at their [support
+ForeFlight are available at their [support
 page](https://www.foreflight.com/support/content-packs/) (search for
 "Importing Content Packs").
 
 For instructions on how to download and import KML files into
-Foreflight, please see [this page in the Support
+ForeFlight, please see [this page in the Support
 Center](https://foreflight.com/support/support-center/category/about-foreflight-mobile/360000219488). Note:
 some users have reported issues with downloading KML files from Github
 from their iPads. If you have issues with the download (e.g., the
 files are downloaded as plain text), please download them on your
 computer and import them with iTunes, or use a Content Pack instead
 (recommended).
+
+For instructions on how to download and import KML files into another
+program (like Google Earth), please refer to the documentation
+provided with that program.
 
 ## History
 
