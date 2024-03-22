@@ -87,7 +87,9 @@ discussed various uses of the MVA charts by the Air Traffic
 Controllers. Specifically, [episode
 161](https://opposingbases.libsyn.com/ob161-heading-shmeading/)
 included feedback from one of the listeners about how to convert the
-XML originals into KML in a semi-automated way.
+XML originals into KML in a semi-automated way. This project was then
+featured on [episode
+168](https://opposingbases.libsyn.com/ob168-under-there-under-where).
 
 # Legal Disclaimer
 
