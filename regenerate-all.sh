@@ -18,67 +18,6 @@
 #
 
 D=$(readlink -f "$0" | xargs dirname)
-export D
-
-# Generate a KML file given its XML input.
-function generate_kml() {
-  map_type="${1}"
-  input="${2}"
-  output="${TMPDIR}/${map_type}-kml/$(basename "${input}" | sed 's/\.xml/.kml/')"
-  # Always try to convert the file.
-  echo "  ${input} -> ${output}"
-  "${D}/xml2kml.py" "${input}" -o "${output}"
-  conversion_status=$?
-  # See if the input file is in the blacklist.
-  grep -q "$(basename "${input}")" "${D}/blacklist.txt"
-  blacklist_status=$?
-
-  if [[ $conversion_status -eq 0 ]]; then
-    # Successful conversion case.
-    if [[ $blacklist_status -eq 0 ]]; then
-      # Warn that this file is in the blacklist, despite converting
-      # successfully. This will help remove items from the blacklist
-      # once they get fixed.
-      echo "  WARNING: ${input} is in the blacklist, but converts successfully" >&2
-    fi
-    # Always return success on a successful conversion.
-    return 0
-  fi
-
-  # Unsuccessful conversion case
-  echo "  INFO: failed to convert ${input} -> ${output}" >&2
-  if [[ $blacklist_status -eq 0 ]]; then
-    # Since this file is in the blacklist, ignore the error. Delete
-    # the output file to avoid issues.
-    rm -f "${output}"
-    return 0
-  fi
-
-  # This input file is not blacklisted, return an error.
-  echo "  ERROR: please add '$(basename "${input}")' to the blacklist to suppress this error." >&2
-  return $conversion_status
-}
-export -f generate_kml
-
-# Generate a contentpack file for a given map type (MVA/MIA) and TRACON identifier.
-function generate_contentpack() {
-  map_type="${1}"
-  id="${2}"
-  packname="${map_type}-${id}"
-  mkdir -p "${TMPDIR}/work/${packname}"
-  mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${D}/${map_type,,}-kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
-  cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
-{
-  "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
-  "abbreviation": "${packname}-v$(date "+%Y.%m.%d")",
-  "version": $(date "+%y.%j"),
-  "organizationName": "github.com/dark/faa-mva-kml"
-}
-EOF
-  zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
-}
-export -f generate_contentpack
 
 function do_work() {
   map_type_lowercase="${1,,}"
@@ -110,7 +49,7 @@ function do_work() {
   # Regenerate all KML files.
   echo
   echo '  * Regenerate all KML files...'
-  find "${D}/${map_type_lowercase}-faa-xml/" -name '*.xml' | parallel --eta --color-failed generate_kml "${map_type_lowercase}" > /dev/null
+  find "${D}/${map_type_lowercase}-faa-xml/" -name '*.xml' | parallel --eta --color-failed "${D}/scripts/generate-kml.sh" "${map_type_lowercase}" > /dev/null
   echo 'Regeneration complete, moving files into the repo...'
   rm -rf "${D}/${map_type_lowercase}-kml/"
   mv "${TMPDIR}/${map_type_lowercase}-kml/" "${D}/${map_type_lowercase}-kml/"
@@ -121,7 +60,7 @@ function do_work() {
   echo '  * Regenerate contentpack files with modifications...'
   pushd "${TMPDIR}/work/" &> /dev/null
   git -C "${D}" status -s | grep " ${map_type_lowercase}-kml/" | sed "s:.* ${map_type_lowercase}-kml/::" | cut -f 1 -d _ | \
-    sort | uniq | parallel --eta generate_contentpack "${map_type_uppercase}" > /dev/null
+    sort | uniq | parallel --eta "${D}/scripts/generate-contentpack.sh" "${map_type_uppercase}" > /dev/null
   popd &> /dev/null
   if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
     echo 'Done regenerating contentpack files, moving files into the repo...'
