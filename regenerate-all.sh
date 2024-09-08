@@ -60,7 +60,7 @@ function do_work() {
   echo '  * Regenerate contentpack files with modifications...'
   pushd "${TMPDIR}/work/" &> /dev/null
   git -C "${D}" status -s | grep " ${map_type_lowercase}-kml/" | sed "s:.* ${map_type_lowercase}-kml/::" | cut -f 1 -d _ | \
-    sort | uniq | parallel --eta "${D}/scripts/generate-contentpack.sh" "${map_type_uppercase}" > /dev/null
+    sort | uniq | parallel --eta "${D}/scripts/generate-contentpack.sh" "${D}/${map_type_lowercase}-kml/" "${map_type_uppercase}" > /dev/null
   popd &> /dev/null
   if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
     echo 'Done regenerating contentpack files, moving files into the repo...'

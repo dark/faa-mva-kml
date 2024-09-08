@@ -21,12 +21,13 @@ D=$(readlink -f "$0" | xargs dirname)
 
 # Generate a contentpack file for a given map type (MVA/MIA) and TRACON identifier.
 function generate_contentpack() {
-  map_type="${1}"
-  id="${2}"
+  source_dir="${1}"
+  map_type="${2}"
+  id="${3}"
   packname="${map_type}-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${D}/${map_type,,}-kml/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp ${source_dir}/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
   "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
@@ -42,4 +43,4 @@ if [[ -z "${TMPDIR}" ]]; then
   echo '  FATAL: TMPDIR has not been defined'
   exit 1
 fi
-generate_contentpack "${1}" "${2}"
+generate_contentpack "${1}" "${2}" "${3}"
