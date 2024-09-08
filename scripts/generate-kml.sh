@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 #  FAA Minimum Vectoring Altitude (MVA) Charts as KML Files
 #  Copyright (C) 2021-2024  Marco Leogrande
