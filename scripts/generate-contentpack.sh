@@ -28,14 +28,27 @@ function generate_contentpack() {
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
   cp -a ${source_dir}/${id}_* "${TMPDIR}/work/${packname}/layers/"
+
+  # Scan for the latest file, to determine what the version of this
+  # pack should be.
+  latest_file=$(ls "${TMPDIR}/work/${packname}/layers/" --sort=time | head -1)
+  latest_mtime=$(stat -c %Y "${TMPDIR}/work/${packname}/layers/${latest_file}")
+  echo "Contentpack version: $(date -R --date "@${latest_mtime}") (${latest_mtime})"
+
+  # Use the determined mtime to label the contentpack and timestamp
+  # the manifest and all artifacts.
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
-  "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
-  "abbreviation": "${packname}-v$(date "+%Y.%m.%d")",
-  "version": $(date "+%y.%j"),
+  "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d" --date "@${latest_mtime}")",
+  "abbreviation": "${packname}-v$(date "+%Y.%m.%d" --date "@${latest_mtime}")",
+  "version": $(date "+%y.%j" --date "@${latest_mtime}"),
   "organizationName": "github.com/dark/faa-mva-kml"
 }
 EOF
+  touch --no-create --date "@${latest_mtime}" "${TMPDIR}/work/${packname}/manifest.json"
+  touch --no-create --date "@${latest_mtime}" "${TMPDIR}/work/${packname}/layers"
+  touch --no-create --date "@${latest_mtime}" "${TMPDIR}/work/${packname}"
+
   zip -r --latest-time -X "${TMPDIR}/contentpack/${packname}" "${packname}/"
 }
 
