@@ -57,18 +57,15 @@ function do_work() {
 
   # Iterate through all unique TRACON identifiers and generate content packs.
   echo
-  echo '  * Regenerate contentpack files with modifications...'
+  echo '  * Regenerate contentpack files...'
   pushd "${TMPDIR}/work/" &> /dev/null
-  git -C "${D}" status -s | grep " ${map_type_lowercase}-kml/" | sed "s:.* ${map_type_lowercase}-kml/::" | cut -f 1 -d _ | \
-    sort | uniq | parallel --eta "${D}/scripts/generate-contentpack.sh" "${D}/${map_type_lowercase}-kml/" "${map_type_uppercase}" > /dev/null
+  ls "${D}/${map_type_lowercase}-kml/" | cut -f 1 -d _ | sort | uniq | \
+    parallel --eta "${D}/scripts/generate-contentpack.sh" "${D}/${map_type_lowercase}-kml/" "${map_type_uppercase}" > /dev/null
   popd &> /dev/null
-  if ls ${TMPDIR}/contentpack/*.zip &> /dev/null; then
-    echo 'Done regenerating contentpack files, moving files into the repo...'
-    mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
-    echo 'Contentpack files moved into the repo.'
-  else
-    echo 'No contentpack file was regenerated.'
-  fi
+  echo 'Done regenerating contentpack files, moving files into the repo...'
+  rm -f "${D}/contentpack/${map_type_uppercase}-*.zip"
+  mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
+  echo 'Contentpack files moved into the repo.'
 
   # Cleanup
   echo
