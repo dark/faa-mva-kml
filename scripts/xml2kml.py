@@ -129,10 +129,15 @@ class Airspace:
 class Chart:
     # All airspaces in this chart.
     airspaces: List[Airspace] = ...
+    # Access time and modified time of the input file
+    input_file_times: (float, float) = ...
 
     def __init__(self, filename: str):
         tree = ElementTree.parse(filename)
         root = tree.getroot()
+
+        # Save these for later, so we can use them to set them on the output file
+        self.input_file_times = (os.path.getatime(filename), os.path.getmtime(filename))
 
         self.airspaces = []
         for airspace in root.findall(
@@ -188,6 +193,8 @@ class Chart:
                 "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png"
             )
         kml.save(filename)
+        # Set atime and time for a reproducible build
+        os.utime(filename, times=self.input_file_times)
 
 
 def main(input: str, output: str) -> None:
