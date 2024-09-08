@@ -68,7 +68,7 @@ page](https://www.foreflight.com/support/content-packs/) (search for
 
 For instructions on how to download and import KML files into
 ForeFlight, please see [this page in the Support
-Center](https://foreflight.com/support/support-center/category/about-foreflight-mobile/360000219488). Note:
+Center](https://support.foreflight.com/hc/en-us/articles/360000219488-User-Content-Creation-and-Importation-Guide). Note:
 some users have reported issues with downloading KML files from Github
 from their iPads. If you have issues with the download (e.g., the
 files are downloaded as plain text), please download them on your
