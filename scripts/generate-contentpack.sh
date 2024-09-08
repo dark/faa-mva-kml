@@ -27,7 +27,7 @@ function generate_contentpack() {
   packname="${map_type}-${id}"
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp ${source_dir}/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp -a ${source_dir}/${id}_* "${TMPDIR}/work/${packname}/layers/"
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
   "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d")",
@@ -36,7 +36,7 @@ function generate_contentpack() {
   "organizationName": "github.com/dark/faa-mva-kml"
 }
 EOF
-  zip -r "${TMPDIR}/contentpack/${packname}" "${packname}/"
+  zip -r --latest-time -X "${TMPDIR}/contentpack/${packname}" "${packname}/"
 }
 
 if [[ -z "${TMPDIR}" ]]; then
