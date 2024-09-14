@@ -63,7 +63,7 @@ function do_work() {
     parallel --eta "${D}/scripts/generate-contentpack.sh" "${D}/${map_type_lowercase}-kml/" "${map_type_uppercase}" > /dev/null
   popd &> /dev/null
   echo 'Done regenerating contentpack files, moving files into the repo...'
-  rm -f "${D}/contentpack/${map_type_uppercase}-*.zip"
+  rm -f ${D}/contentpack/${map_type_uppercase}-*.zip
   mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
   echo 'Contentpack files moved into the repo.'
 
