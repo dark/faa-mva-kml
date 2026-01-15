@@ -21,13 +21,13 @@ D=$(readlink -f "$0" | xargs dirname)
 
 # Generate a contentpack file for a given map type (MVA/MIA) and TRACON identifier.
 function generate_contentpack() {
-  source_dir="${1}"
-  map_type="${2}"
-  id="${3}"
-  packname="${map_type}-${id}"
+  source_files="${1}"
+  packname="${2}"
+  description="${3}"
+
   mkdir -p "${TMPDIR}/work/${packname}"
   mkdir -p "${TMPDIR}/work/${packname}/layers"
-  cp -a ${source_dir}/${id}_* "${TMPDIR}/work/${packname}/layers/"
+  cp -a ${source_files} "${TMPDIR}/work/${packname}/layers/"
 
   # Scan for the latest file, to determine what the version of this
   # pack should be.
@@ -39,7 +39,7 @@ function generate_contentpack() {
   # the manifest and all artifacts.
   cat > "${TMPDIR}/work/${packname}/manifest.json" <<EOF
 {
-  "name": "${map_type} Charts for ${id} $(date "+%Y.%m.%d" --date "@${latest_mtime}")",
+  "name": "${description} $(date "+%Y.%m.%d" --date "@${latest_mtime}")",
   "abbreviation": "${packname}-v$(date "+%Y.%m.%d" --date "@${latest_mtime}")",
   "version": $(date "+%y.%j" --date "@${latest_mtime}"),
   "organizationName": "github.com/dark/faa-mva-kml"
@@ -56,4 +56,7 @@ if [[ -z "${TMPDIR}" ]]; then
   echo '  FATAL: TMPDIR has not been defined'
   exit 1
 fi
-generate_contentpack "${1}" "${2}" "${3}"
+# source_dir="${1}"
+# map_type="${2}"
+# id="${3}"
+generate_contentpack "${1}/${3}_*" "${2}-${3}" "${2} Charts for ${3}"
