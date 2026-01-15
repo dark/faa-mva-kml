@@ -22,7 +22,7 @@ import attr
 import os
 import simplekml
 from shapely.geometry import Polygon
-from typing import List, Tuple
+from typing import Tuple
 from xml.etree import ElementTree
 
 # Constant namespaces used in all input XML files. See XML file headers.
@@ -91,7 +91,7 @@ class Airspace:
     floor: int = ...
 
     # The vertexes of the airspace
-    vertexes: List[Position] = ...
+    vertexes: list[Position] = ...
 
     def __init__(self, element: ElementTree.Element):
         """Creates an airspace representation from an XML element."""
@@ -128,7 +128,7 @@ class Airspace:
 
 class Chart:
     # All airspaces in this chart.
-    airspaces: List[Airspace] = ...
+    airspaces: list[Airspace] = ...
     # Access time and modified time of the input file
     input_file_atime: float = ...
     input_file_mtime: float = ...
