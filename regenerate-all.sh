@@ -31,7 +31,6 @@ function do_work() {
   mkdir -p "${TMPDIR}/${map_type_lowercase}-faa-xml/"
   mkdir -p "${TMPDIR}/${map_type_lowercase}-kml/"
   mkdir -p "${TMPDIR}/contentpack/"
-  mkdir -p "${TMPDIR}/tmp/"
   echo "Using temporary directory: ${TMPDIR}"
 
   # Download all XML files from the FAA website.
