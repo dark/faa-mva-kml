@@ -210,26 +210,29 @@ class Chart:
         os.utime(filename, times=(self.input_file_atime, self.input_file_mtime))
 
 
-def main(input: str, output: str) -> None:
+def main(inputs: list[str], output: str) -> None:
     chart = Chart()
-    print("Converting input file %s to output %s" % (input, output))
-    print("Parsing input file...")
-    chart.parse(input)
-    print("Input file with %d airspaces parsed successfully" % len(chart.airspaces))
+    for input in inputs:
+        print("Parsing input file %s..." % input)
+        chart.parse(input)
+        print("Input file parsed successfully; %d airspaces so far" % len(chart.airspaces))
+
+    print("Writing output file %s..." % output)
     chart.write_kml(output)
     print("Output file written successfully")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Convert a FAA MVA file from XML to KML"
+        description="Convert FAA MVA files from XML to KML"
     )
-    parser.add_argument("input", type=str, help="input XML file")
+    parser.add_argument("input", type=str, help="input XML files", nargs="+")
     parser.add_argument(
         "-o",
         "--output",
         type=str,
-        help="output KML file (if not provided, .kml is appended to the input file name",
+        help="output KML file",
+        required=True,
     )
     args = parser.parse_args()
-    main(args.input, args.input + ".kml" if args.output is None else args.output)
+    main(args.input, args.output)
