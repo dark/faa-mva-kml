@@ -58,7 +58,7 @@ class Palette:
                 ## against water bodies of VFR charts.
                 # simplekml.Color.teal,
                 ## This is a good alternative to teal.
-                'FFD27878',
+                "FFD27878",
             ]:
                 yield color
 
@@ -117,7 +117,11 @@ class Airspace:
         self.vertexes = []
         for i in range(0, len(coords), 2):
             self.vertexes.append(
-                Position(lat=float(coords[i + 1]), long=float(coords[i]), height=feet_to_meters(self.floor))
+                Position(
+                    lat=float(coords[i + 1]),
+                    long=float(coords[i]),
+                    height=feet_to_meters(self.floor),
+                )
             )
 
     def representative_point(self) -> Position:
@@ -215,7 +219,9 @@ def main(inputs: list[str], output: str) -> None:
     for input in inputs:
         print("Parsing input file %s..." % input)
         chart.parse(input)
-        print("Input file parsed successfully; %d airspaces so far" % len(chart.airspaces))
+        print(
+            "Input file parsed successfully; %d airspaces so far" % len(chart.airspaces)
+        )
 
     print("Writing output file %s..." % output)
     chart.write_kml(output)
