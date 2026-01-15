@@ -130,16 +130,29 @@ class Chart:
     # All airspaces in this chart.
     airspaces: List[Airspace] = ...
     # Access time and modified time of the input file
-    input_file_times: (float, float) = ...
+    input_file_atime: float = ...
+    input_file_mtime: float = ...
 
-    def __init__(self, filename: str):
+    def __init__(self):
+        self.airspaces = []
+        # Initialize atime and mtime to the oldest timestamps
+        # possible. They will be updated during parsing.
+        self.input_file_atime = 0.0
+        self.input_file_mtime = 0.0
+
+    def parse(self, filename: str):
         tree = ElementTree.parse(filename)
         root = tree.getroot()
 
-        # Save these for later, so we can use them to set them on the output file
-        self.input_file_times = (os.path.getatime(filename), os.path.getmtime(filename))
+        # Save these for later, so we can use them to set them on the output file.
+        atime = os.path.getatime(filename)
+        mtime = os.path.getmtime(filename)
+        # Compare the timestamps with those already stored (if any),
+        # and take the maximum. This is useful if parsing multiple
+        # files.
+        self.input_file_atime = max(self.input_file_atime, atime)
+        self.input_file_mtime = max(self.input_file_mtime, mtime)
 
-        self.airspaces = []
         for airspace in root.findall(
             "ns8:hasMember/ns3:Airspace/ns3:timeSlice/ns3:AirspaceTimeSlice", NAMESPACES
         ):
@@ -194,13 +207,14 @@ class Chart:
             )
         kml.save(filename)
         # Set atime and time for a reproducible build
-        os.utime(filename, times=self.input_file_times)
+        os.utime(filename, times=(self.input_file_atime, self.input_file_mtime))
 
 
 def main(input: str, output: str) -> None:
+    chart = Chart()
     print("Converting input file %s to output %s" % (input, output))
     print("Parsing input file...")
-    chart = Chart(input)
+    chart.parse(input)
     print("Input file with %d airspaces parsed successfully" % len(chart.airspaces))
     chart.write_kml(output)
     print("Output file written successfully")
