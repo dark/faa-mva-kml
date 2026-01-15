@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #  FAA Minimum Vectoring Altitude (MVA) Charts as KML Files
-#  Copyright (C) 2021-2024  Marco Leogrande
+#  Copyright (C) 2021-2026  Marco Leogrande
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
