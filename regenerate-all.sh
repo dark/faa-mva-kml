@@ -72,6 +72,34 @@ function do_work() {
   unset TMPDIR
 }
 
+function generate_combined_files() {
+  echo 'Generating combined files'
+
+  # Create all temporary directories
+  TMPDIR=$(mktemp -d)
+  export TMPDIR
+  mkdir -p "${TMPDIR}/work/"
+  mkdir -p "${TMPDIR}/contentpack/"
+  echo "Using temporary directory: ${TMPDIR}"
+
+  # Generate the KML files from the XML files already downloaded.
+  echo
+  echo '  * Combine MVA maps (3 miles)...'
+  find "${D}/mva-faa-xml/" -name '*FUS3*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/mva-3miles.kml" > /dev/null
+  echo '  * Combine MVA maps (5 miles)...'
+  find "${D}/mva-faa-xml/" -name '*FUS5*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/mva-5miles.kml" > /dev/null
+  echo '  * Combine MVA maps (all others)...'
+  find "${D}/mva-faa-xml/" -name '*.xml' -and -not -name '*FUS3*.xml' -and -not -name '*FUS5*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/mva-others.kml" > /dev/null
+  echo '  * Combine MIA maps...'
+  find "${D}/mia-faa-xml/" -name '*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/mia.kml" > /dev/null
+
+  # Cleanup
+  echo
+  rm -rf "${TMPDIR}/"
+  unset TMPDIR
+}
+
 # main code
 do_work 'mva'
 do_work 'mia'
+generate_combined_files
