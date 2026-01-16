@@ -93,6 +93,19 @@ function generate_combined_files() {
   echo '  * Combine MIA maps...'
   find "${D}/mia-faa-xml/" -name '*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/mia.kml" > /dev/null
 
+  # Generate content packs.
+  echo
+  echo '  * Generate contentpack files...'
+  pushd "${TMPDIR}/work/" &> /dev/null
+  "${D}/scripts/generate-combined-contentpack.sh" "${TMPDIR}/work/mva-3miles.kml" 'MVA-FUS3' 'MVA Charts (3 miles)' > /dev/null
+  "${D}/scripts/generate-combined-contentpack.sh" "${TMPDIR}/work/mva-5miles.kml" 'MVA-FUS5' 'MVA Charts (5 miles)' > /dev/null
+  "${D}/scripts/generate-combined-contentpack.sh" "${TMPDIR}/work/mva-others.kml" 'MVA-others' 'MVA Charts (others)' > /dev/null
+  "${D}/scripts/generate-combined-contentpack.sh" "${TMPDIR}/work/mia.kml" 'MIA' 'MIA Charts' > /dev/null
+  popd &> /dev/null
+  echo 'Done regenerating contentpack files, moving files into the repo...'
+  mv ${TMPDIR}/contentpack/*.zip "${D}/contentpack/"
+  echo 'Contentpack files moved into the repo.'
+
   # Cleanup
   echo
   rm -rf "${TMPDIR}/"
