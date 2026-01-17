@@ -35,6 +35,11 @@ the Southern California TRACON MVA maps are imported:
   identifier of each facility. You can lookup the TRACON identifiers
   at [this
   link](https://www.faa.gov/about/office_org/headquarters_offices/ato/service_units/air_traffic_services/tracon/).
+  That directory also includes combined maps:
+  * `combined-MIA.zip`: overlays all MIA maps
+  * `combined-MVA-FUS3.zip`: overlays all MVA-FUS3 maps
+  * `combined-MVA-FUS5.zip`: overlays all MVA-FUS5 maps
+  * `combined-MVA-others.zip`: overlays all MVA maps that are not FUS3 nor FUS5
 
 Each TRACON facility usually publishes two MVA maps, named `FUS3` and
 `FUS5`. To the best of my knowledge, they are generated to give 3 and
