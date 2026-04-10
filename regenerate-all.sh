@@ -72,6 +72,19 @@ function do_work() {
   unset TMPDIR
 }
 
+function filter_blacklisted_files() {
+  # No-frills filter to remove blacklisted files from those to be
+  # combined. No specific handling is done here, because the
+  # expectation is that `generate-kml.sh`, called above, already warns
+  # us of failures and false positives.
+  while read filename; do
+    if ! grep -q "$(basename "${filename}")" "${D}/scripts/blacklist.txt"; then
+      # This file is not in the blacklist.
+      echo "${filename}"
+    fi
+  done
+}
+
 function generate_combined_files() {
   echo 'Generating combined files'
 
@@ -85,14 +98,17 @@ function generate_combined_files() {
   # Generate the KML files from the XML files already downloaded.
   echo
   echo '  * Combine MVA maps (3 miles)...'
-  find "${D}/mva-faa-xml/" -name '*FUS3*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-FUS3.kml" > /dev/null
+  find "${D}/mva-faa-xml/" -name '*FUS3*.xml' \
+    | filter_blacklisted_files | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-FUS3.kml" > /dev/null
   echo '  * Combine MVA maps (5 miles)...'
-  find "${D}/mva-faa-xml/" -name '*FUS5*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-FUS5.kml" > /dev/null
+  find "${D}/mva-faa-xml/" -name '*FUS5*.xml' \
+    | filter_blacklisted_files | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-FUS5.kml" > /dev/null
   echo '  * Combine MVA maps (all others)...'
   find "${D}/mva-faa-xml/" -name '*.xml' -and -not -name '*FUS3*.xml' -and -not -name '*FUS5*.xml' \
-    | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-others.kml" > /dev/null
+    | filter_blacklisted_files | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MVA-others.kml" > /dev/null
   echo '  * Combine MIA maps...'
-  find "${D}/mia-faa-xml/" -name '*.xml' | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MIA.kml" > /dev/null
+  find "${D}/mia-faa-xml/" -name '*.xml' \
+    | filter_blacklisted_files | xargs "${D}/scripts/xml2kml.py" -o "${TMPDIR}/work/combined-MIA.kml" > /dev/null
 
   # Generate content packs.
   echo
